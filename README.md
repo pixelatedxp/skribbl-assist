@@ -1,4 +1,4 @@
-# Immence
+# Immence/Skribbl helper
 
 Immence is a Chrome extension for skribbl.io that brings guessing tools and game customization into one compact menu. It includes automatic guessing, adjustable pacing, word filtering, status overlays, chat controls, reconnect and requeue options, custom colors, and saved configurations.
 
