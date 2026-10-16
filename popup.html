@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+      <div class="shell">
+        <aside class="sidebar">
+      <div class="brand"><span>Immence</span></div>
+      <button class="tab active" data-tab="guess"><span class="tab-icon">G</span>Guess</button>
+      <button class="tab" data-tab="chat"><span class="tab-icon">C</span>Chat</button>
+      <button class="tab" data-tab="recovery"><span class="tab-icon">R</span>Recovery</button>
+      <button class="tab" data-tab="visuals"><span class="tab-icon">V</span>Visuals</button>
+      <button class="tab" data-tab="configs"><span class="tab-icon">S</span>Configs</button>
+    </aside>
+
+    <main class="content">
+      <section class="page active" data-page="guess">
+        <div class="page-title">
+          <h1>Guess</h1>
+          <p>Auto guessing, pacing, and candidate behavior.</p>
+        </div>
+
+        <div class="grid">
+          <label class="toggle"><span>Auto-guess</span><input type="checkbox" id="autoGuess" /></label>
+          <label class="toggle"><span>Status overlay</span><input type="checkbox" id="showStatus" checked /></label>
+          <label class="toggle"><span>Cooldown status</span><input type="checkbox" id="showCooldown" checked /></label>
+          <label class="toggle"><span>Word list</span><input type="checkbox" id="showWordList" /></label>
+          <label class="toggle"><span>Sort by popularity</span><input type="checkbox" id="sortPopularity" checked /></label>
+          <label class="toggle"><span>Filter other guesses</span><input type="checkbox" id="filterOtherGuesses" checked /></label>
+          <label class="toggle"><span>Close sniper</span><input type="checkbox" id="useCloseSniper" checked /></label>
+          <label class="toggle"><span>Adaptive speed</span><input type="checkbox" id="adaptiveSpeed" checked /></label>
+        </div>
+
+        <div class="card">
+          <label class="field">
+            <span>Toggle hotkey</span>
+            <button type="button" id="hotkeyButton" class="hotkey-button">Control</button>
+          </label>
+        </div>
+
+        <div class="sliders">
+          <div class="control" data-setting="delaySpeed">
+            <div class="control-label"><span>Delay</span><strong id="delayLabel">1000ms</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-50">-</button><input type="range" id="delaySlider" min="50" max="3000" step="50" value="1000" /><button type="button" class="step" data-step="50">+</button></div>
+          </div>
+          <div class="control" data-setting="minLetters">
+            <div class="control-label"><span>Min letters</span><strong id="minLettersLabel">Any</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-1">-</button><input type="range" id="minLettersSlider" min="0" max="5" step="1" value="0" /><button type="button" class="step" data-step="1">+</button></div>
+          </div>
+          <div class="control" data-setting="maxWords">
+            <div class="control-label"><span>Max words</span><strong id="maxWordsLabel">Any</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-10">-</button><input type="range" id="maxWordsSlider" min="0" max="200" step="10" value="0" /><button type="button" class="step" data-step="10">+</button></div>
+          </div>
+          <div class="control" data-setting="spamPause">
+            <div class="control-label"><span>Spam pause</span><strong id="spamPauseLabel">5000ms</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-500">-</button><input type="range" id="spamPauseSlider" min="500" max="15000" step="500" value="5000" /><button type="button" class="step" data-step="500">+</button></div>
+          </div>
+          <div class="control" data-setting="rampStart">
+            <div class="control-label"><span>Ramp start</span><strong id="rampStartLabel">3000ms</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-100">-</button><input type="range" id="rampStartSlider" min="100" max="15000" step="100" value="3000" /><button type="button" class="step" data-step="100">+</button></div>
+          </div>
+          <div class="control" data-setting="rampStepPct">
+            <div class="control-label"><span>Ramp percent</span><strong id="rampStepLabel">11%</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-1">-</button><input type="range" id="rampStepSlider" min="1" max="50" step="1" value="11" /><button type="button" class="step" data-step="1">+</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="chat">
+        <div class="page-title">
+          <h1>Chat</h1>
+          <p>Hide noisy messages and assist with votekicks.</p>
+        </div>
+        <div class="grid">
+          <label class="toggle"><span>Hide spam warnings</span><input type="checkbox" id="hideSpamWarnings" /></label>
+          <label class="toggle"><span>Hide close messages</span><input type="checkbox" id="hideCloseMessages" /></label>
+          <label class="toggle"><span>Hide user messages</span><input type="checkbox" id="hideUserMessages" /></label>
+          <div class="notice-control">
+            <label class="toggle"><span>Hide game notices</span><input type="checkbox" id="hideGameNotices" /></label>
+            <button type="button" id="noticeSettingsButton" class="icon-button" title="Notice filters">&#9881;</button>
+            <div id="noticeSettingsMenu" class="mini-menu">
+              <label class="mini-toggle"><span>Guessed word</span><input type="checkbox" id="hideNoticeGuessed" checked /></label>
+              <label class="mini-toggle"><span>Word reveal</span><input type="checkbox" id="hideNoticeWordReveal" checked /></label>
+              <label class="mini-toggle"><span>Join / leave</span><input type="checkbox" id="hideNoticeJoinLeave" checked /></label>
+              <label class="mini-toggle"><span>Drawing turn</span><input type="checkbox" id="hideNoticeDrawing" checked /></label>
+              <label class="mini-toggle"><span>Likes / dislikes</span><input type="checkbox" id="hideNoticeReactions" checked /></label>
+              <label class="mini-toggle"><span>Kick / ban</span><input type="checkbox" id="hideNoticeKickBan" checked /></label>
+              <label class="mini-toggle"><span>Votekick votes</span><input type="checkbox" id="hideNoticeVotekick" checked /></label>
+            </div>
+          </div>
+          <label class="toggle"><span>Auto votekick</span><input type="checkbox" id="autoVotekick" /></label>
+        </div>
+        <div class="config-box chat-repeat">
+          <label class="toggle repeat-toggle"><span>Repeater enabled</span><input type="checkbox" id="chatRepeatEnabled" /></label>
+          <label class="text-field"><span>Message repeater</span><input type="text" id="chatRepeatMessage" placeholder="Message" maxlength="100" /></label>
+          <label class="text-field"><span>Times to send</span><input type="number" id="chatRepeatCount" min="1" max="20" step="1" value="1" /></label>
+          <div class="hint">Uses Guess delay, spam pause, ramp start, and ramp percent.</div>
+          <div id="chatRepeatStatus" class="status"></div>
+        </div>
+      </section>
+
+      <section class="page" data-page="recovery">
+        <div class="page-title">
+          <h1>Recovery</h1>
+          <p>Return to a room or queue again after errors.</p>
+        </div>
+        <div class="config-box recovery-box">
+          <label class="toggle repeat-toggle"><span>Auto reconnect</span><input type="checkbox" id="autoReconnect" /></label>
+          <label class="toggle repeat-toggle"><span>Auto requeue</span><input type="checkbox" id="autoRequeue" /></label>
+          <div class="control" data-setting="requeueDelay">
+            <div class="control-label"><span>Retry delay</span><strong id="requeueDelayLabel">3000ms</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-500">-</button><input type="range" id="requeueDelaySlider" min="500" max="30000" step="500" value="3000" /><button type="button" class="step" data-step="500">+</button></div>
+          </div>
+          <div class="hint">Only one mode can be enabled. Reconnect uses the saved private room after normal disconnect. Requeue joins a fresh public room after leave/kick/error.</div>
+        </div>
+      </section>
+
+      <section class="page" data-page="visuals">
+        <div class="page-title">
+          <h1>Visuals</h1>
+          <p>Change how the game looks on your screen only.</p>
+        </div>
+        <div class="grid">
+          <label class="toggle wide"><span>Custom theme</span><input type="checkbox" id="customTheme" /></label>
+          <label class="toggle wide"><span>Clean lobby</span><input type="checkbox" id="cleanLobby" /></label>
+        </div>
+        <div class="colors">
+          <label class="color-row"><span>Background</span><input type="color" id="themeBackground" value="#15161c" /></label>
+          <label class="color-row"><span>Panels</span><input type="color" id="themePanel" value="#182044" /></label>
+          <label class="color-row"><span>Chat</span><input type="color" id="themeChat" value="#10131d" /></label>
+          <label class="color-row"><span>Player sidebar</span><input type="color" id="themePlayers" value="#151a2c" /></label>
+          <label class="color-row"><span>Text</span><input type="color" id="themeText" value="#f0f2f7" /></label>
+          <label class="color-row"><span>Accent</span><input type="color" id="themeAccent" value="#8fa7ff" /></label>
+        </div>
+        <div class="control visual-control" data-setting="themeBrightness">
+          <div class="control-label"><span>Brightness</span><strong id="brightnessLabel">100%</strong></div>
+          <div class="step-row"><button type="button" class="step" data-step="-5">-</button><input type="range" id="brightnessSlider" min="50" max="150" step="5" value="100" /><button type="button" class="step" data-step="5">+</button></div>
+        </div>
+        <div class="sliders menu-style">
+          <div class="control" data-setting="menuHue">
+            <div class="control-label"><span>Menu hue</span><strong id="menuHueLabel">225</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-5">-</button><input type="range" id="menuHueSlider" min="0" max="360" step="5" value="225" /><button type="button" class="step" data-step="5">+</button></div>
+          </div>
+          <div class="control" data-setting="menuSat">
+            <div class="control-label"><span>Menu saturation</span><strong id="menuSatLabel">80%</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-5">-</button><input type="range" id="menuSatSlider" min="0" max="100" step="5" value="80" /><button type="button" class="step" data-step="5">+</button></div>
+          </div>
+          <div class="control" data-setting="menuGlow">
+            <div class="control-label"><span>Menu glow</span><strong id="menuGlowLabel">35%</strong></div>
+            <div class="step-row"><button type="button" class="step" data-step="-5">-</button><input type="range" id="menuGlowSlider" min="0" max="100" step="5" value="35" /><button type="button" class="step" data-step="5">+</button></div>
+          </div>
+        </div>
+        <div class="config-box visual-links">
+          <label class="text-field"><span>Lobby background URL</span><input type="text" id="lobbyBackgroundUrl" placeholder="https://example.com/lobby.png" /></label>
+          <label class="text-field"><span>Game background URL</span><input type="text" id="gameBackgroundUrl" placeholder="https://example.com/game.png" /></label>
+        </div>
+        <button type="button" id="resetTheme" class="primary-button">Reset theme</button>
+      </section>
+
+      <section class="page" data-page="configs">
+        <div class="page-title">
+          <h1>Configs</h1>
+          <p>Save and load named menu setups.</p>
+        </div>
+        <div class="config-box">
+          <input type="text" id="configName" placeholder="Config name" maxlength="32" />
+          <select id="configSelect"></select>
+          <div class="button-row">
+            <button type="button" id="saveConfig" class="primary-button">Save</button>
+            <button type="button" id="loadConfig">Load</button>
+            <button type="button" id="deleteConfig">Delete</button>
+          </div>
+          <div id="configStatus" class="status"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

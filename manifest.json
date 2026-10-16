@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Immence",
+  "version": "1.1",
+  "description": "Auto-guess for skribbl.io",
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": [
+    "*://skribbl.io/*",
+    "*://*.skribbl.io/*",
+    "https://skribbliohints.github.io/*"
+  ],
+  "content_scripts": [{
+    "matches": ["*://skribbl.io/*", "*://*.skribbl.io/*"],
+    "js": ["wordlist.js", "content.js"],
+    "run_at": "document_end",
+    "world": "ISOLATED"
+  }],
+  "icons": {
+    "16": "icon_simple.png",
+    "48": "icon_simple.png",
+    "128": "icon_simple.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon_simple.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
